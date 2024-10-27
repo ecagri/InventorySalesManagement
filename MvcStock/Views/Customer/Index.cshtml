@@ -1,0 +1,45 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using MvcStock.Models.Entity
+@model PagedList.IPagedList<Tbl_Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Customer", FormMethod.Get))
+{
+    <p>
+        Search: @Html.TextBox("key")
+        <input type="submit" value="Search"/>
+    </p>
+
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Customer Name</th>
+            <th>Customer Surname</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <th>@customer.CustomerId</th>
+                <td>@customer.CustomerName</td>
+                <td>@customer.CustomerSurname</td>
+                <td><a href="/Customer/UpdateCustomer/?customerId=@customer.CustomerId" class="btn btn-success">Update</a></td>
+                <td>@Html.ActionLink("Delete", "DeleteCustomer", new { customerId = customer.CustomerId }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure to delete?')" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index",new { key="", page }))
+
+<a href="/Customer/NewCustomer" class="btn btn-primary">New Customer</a>

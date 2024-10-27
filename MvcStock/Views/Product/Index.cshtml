@@ -1,0 +1,50 @@
+﻿@using MvcStock.Models.Entity
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<Tbl_Product>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product Brand</th>
+            <th>Product Category</th>
+            <th>Product Price</th>
+            <th>Product Stock</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <th>@product.ProductId</th>
+                <td>@product.ProductName</td>
+                <td>@product.ProductBrand</td>
+                <td>@product.Tbl_Category.CategoryName</td>
+                <td>@product.ProductPrice</td>
+                <td>@product.ProductStock</td>
+                <td><a href="/Product/UpdateProduct/?productId=@product.ProductId" class="btn btn-success">Update</a></td>
+                <td><a href="/Product/DeleteProduct/?productId=@product.ProductId" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+
+<a href="/Product/NewProduct" class="btn btn-primary">New Product</a>
+

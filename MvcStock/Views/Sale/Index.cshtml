@@ -1,0 +1,98 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<MvcStock.Models.Entity.Tbl_Sale>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Product</th>
+            <th>Customer</th>
+            <th>Sale Quantity</th>
+            <th>Sale Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            var customer = ((List<MvcStock.Models.Entity.Tbl_Customer>)ViewBag.Customers).Find(c => c.CustomerId == sale.CustomerId);
+            var product = ((List<MvcStock.Models.Entity.Tbl_Product>)ViewBag.Products).Find(p => p.ProductId == sale.ProductId);
+            <tr>
+                <th>@sale.SaleId</th>
+                <td>@product.ProductName</td>
+                <td>@customer.CustomerName @customer.CustomerSurname @customer.CustomerId</td>
+                <td>@sale.SaleQuantity</td>
+                <td>@sale.SalePrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal1">
+    Make a Sale
+</button>
+
+<div class="modal" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    Sales Window
+                </h2>
+                <form class="form-group" action="@Url.Action("NewSale", "Sale")" method="post">
+                    <div>
+                        <label>Product</label>
+                        <select class="form-control" name="ProductId" id="SlcProduct" >
+                            @foreach (var product in (List<MvcStock.Models.Entity.Tbl_Product>)ViewBag.Products)
+                            {
+                                <option value="@product.ProductId" data-stock="@product.ProductStock">@product.ProductName</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label>Customer</label>
+                        <select class="form-control" name="CustomerId">
+                            @foreach (var customer in (List<MvcStock.Models.Entity.Tbl_Customer>)ViewBag.Customers)
+                            {
+                                <option value="@customer.CustomerId">@customer.CustomerName @customer.CustomerSurname @customer.CustomerId</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label>Sale Quantity</label>
+                        <input type="number" class="form-control" name="SaleQuantity" id="InptSaleQuantity" />
+                    </div>
+                    <div>
+                        <label>Sale Price</label>
+                        <input type="text" class="form-control" name="SalePrice" required/>
+                    </div>
+
+                    <div style="margin-top: 15px">
+                        <button class="btn btn-info" type="submit">Make a sale</button>
+                        <button class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var selectedOption = document.getElementById('SlcProduct').options[document.getElementById('SlcProduct').selectedIndex];
+
+    document.getElementById('InptSaleQuantity').setAttribute('max', selectedOption.getAttribute('data-stock'));
+
+    document.getElementById('SlcProduct').addEventListener('change', function () {
+        var selectedOption = this.options[this.selectedIndex];
+
+        document.getElementById('InptSaleQuantity').setAttribute('max', selectedOption.getAttribute('data-stock'));
+    });
+
+</script>

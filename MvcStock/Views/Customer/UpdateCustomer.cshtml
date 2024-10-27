@@ -1,0 +1,22 @@
+﻿@using MvcStock.Models.Entity
+@model Tbl_Customer
+@{
+    ViewBag.Title = "UpdateCustomer";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<form class="form-group" method="post">
+    <div>
+        <label>Customer Name</label>
+        <input type="text" class="form-control" name="CustomerName" value="@Model.CustomerName" />
+    </div>
+    <div>
+        <label>Customer Surname</label>
+        <input type="text" class="form-control" name="CustomerSurname" value="@Model.CustomerSurname" />
+    </div>
+    <div style="margin-top: 15px">
+        <button class="btn btn-info">Update Customer</button>
+    </div>
+</form>
+
+
