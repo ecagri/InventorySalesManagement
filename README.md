@@ -6,4 +6,8 @@ The database consists of four tables: `Tbl_Category`, `Tbl_Product`, `Tbl_Sale`,
 
 The system allows users to create and update categories, products, and customers, as well as record sales for specific customers and products.
 
+# Overview
+
+Click the image below to watch a video demonstration of the application.
+
 [![ASP.NET MVC Inventory Sales Management System](https://img.youtube.com/vi/igsYaq37yjo/0.jpg)](https://www.youtube.com/watch?v=igsYaq37yjo)
